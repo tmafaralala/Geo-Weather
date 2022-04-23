@@ -27,7 +27,7 @@ class ThemeProvider {
         }
     }
     
-    func toggle(newTheme: Theme) {
+    private func toggle(newTheme: Theme) {
         currentTheme = newTheme
     }
 }
