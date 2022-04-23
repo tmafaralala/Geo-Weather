@@ -13,6 +13,8 @@
 		0B44910A28148F120061550B /* ImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910928148F120061550B /* ImageProvider.swift */; };
 		0B44910E281499240061550B /* WeatherTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910D281499240061550B /* WeatherTypes.swift */; };
 		0B4491102814A7B50061550B /* UISegmentedControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910F2814A7B50061550B /* UISegmentedControlExtension.swift */; };
+		0B4491152814AE980061550B /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4491142814AE980061550B /* ApiRequest.swift */; };
+		0B4491172814B3A90061550B /* ApiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4491162814B3A90061550B /* ApiResponse.swift */; };
 		0BE6C5412811F34F00A11FB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5402811F34F00A11FB9 /* AppDelegate.swift */; };
 		0BE6C5432811F34F00A11FB9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5422811F34F00A11FB9 /* SceneDelegate.swift */; };
 		0BE6C5452811F34F00A11FB9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5442811F34F00A11FB9 /* HomeViewController.swift */; };
@@ -46,6 +48,8 @@
 		0B44910928148F120061550B /* ImageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProvider.swift; sourceTree = "<group>"; };
 		0B44910D281499240061550B /* WeatherTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTypes.swift; sourceTree = "<group>"; };
 		0B44910F2814A7B50061550B /* UISegmentedControlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtension.swift; sourceTree = "<group>"; };
+		0B4491142814AE980061550B /* ApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
+		0B4491162814B3A90061550B /* ApiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponse.swift; sourceTree = "<group>"; };
 		0BE6C53D2811F34F00A11FB9 /* Geo-Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Geo-Weather.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BE6C5402811F34F00A11FB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BE6C5422811F34F00A11FB9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +142,8 @@
 			children = (
 				0BE82CC52811F79200B3D434 /* ApiService.swift */,
 				0BE82CC72811F8CD00B3D434 /* ApiMethods.swift */,
+				0B4491142814AE980061550B /* ApiRequest.swift */,
+				0B4491162814B3A90061550B /* ApiResponse.swift */,
 				0BE82CC92811F97200B3D434 /* ApiErrors.swift */,
 			);
 			path = "Service Layer";
@@ -337,7 +343,9 @@
 				0B4491102814A7B50061550B /* UISegmentedControlExtension.swift in Sources */,
 				0BE82CD82811FE2D00B3D434 /* HomeRepository.swift in Sources */,
 				0B44910A28148F120061550B /* ImageProvider.swift in Sources */,
+				0B4491172814B3A90061550B /* ApiResponse.swift in Sources */,
 				0BE82CC82811F8CD00B3D434 /* ApiMethods.swift in Sources */,
+				0B4491152814AE980061550B /* ApiRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

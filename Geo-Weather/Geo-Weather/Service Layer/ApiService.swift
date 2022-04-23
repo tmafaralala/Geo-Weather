@@ -9,9 +9,11 @@ import Foundation
 
 class ApiService {
     
-    static let 
+    static let instance = ApiService()
     
     func invokeServiceCall() {
         
     }
+    
+    
 }
