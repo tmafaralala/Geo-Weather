@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B449104281478880061550B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B449103281478880061550B /* UIColorExtension.swift */; };
+		0B449106281489D80061550B /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B449105281489D80061550B /* ThemeProvider.swift */; };
+		0B44910828148A180061550B /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910728148A180061550B /* Themes.swift */; };
 		0BE6C5412811F34F00A11FB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5402811F34F00A11FB9 /* AppDelegate.swift */; };
 		0BE6C5432811F34F00A11FB9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5422811F34F00A11FB9 /* SceneDelegate.swift */; };
 		0BE6C5452811F34F00A11FB9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5442811F34F00A11FB9 /* HomeViewController.swift */; };
@@ -34,13 +37,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B449103281478880061550B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		0B449105281489D80061550B /* ThemeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeProvider.swift; sourceTree = "<group>"; };
+		0B44910728148A180061550B /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 		0BE6C53D2811F34F00A11FB9 /* Geo-Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Geo-Weather.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BE6C5402811F34F00A11FB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BE6C5422811F34F00A11FB9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0BE6C5442811F34F00A11FB9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		0BE6C5472811F34F00A11FB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0BE6C54A2811F34F00A11FB9 /* Geo_Weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Geo_Weather.xcdatamodel; sourceTree = "<group>"; };
-		0BE6C54C2811F35400A11FB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0BE6C54C2811F35400A11FB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Geo-Weather/Resources/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		0BE6C54F2811F35400A11FB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BE6C5512811F35400A11FB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BE6C5562811F35500A11FB9 /* Geo-WeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Geo-WeatherTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +77,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B4491022814785A0061550B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0B449103281478880061550B /* UIColorExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		0BE6C5342811F34F00A11FB9 = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +106,7 @@
 		0BE6C53F2811F34F00A11FB9 /* Geo-Weather */ = {
 			isa = PBXGroup;
 			children = (
+				0B4491022814785A0061550B /* Extensions */,
 				0BE82CD62811FCF500B3D434 /* Utilities */,
 				0BE82CCB2811FAC100B3D434 /* Config */,
 				0BE82CD02811FB4500B3D434 /* Resources */,
@@ -170,6 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				0BE82CD92811FE8800B3D434 /* CustomTypes.swift */,
+				0B449105281489D80061550B /* ThemeProvider.swift */,
+				0B44910728148A180061550B /* Themes.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -300,10 +317,13 @@
 				0BE6C5452811F34F00A11FB9 /* HomeViewController.swift in Sources */,
 				0BE82CC62811F79200B3D434 /* ApiService.swift in Sources */,
 				0BE82CD52811FCD700B3D434 /* HomeViewModel.swift in Sources */,
+				0B449106281489D80061550B /* ThemeProvider.swift in Sources */,
 				0BE6C5412811F34F00A11FB9 /* AppDelegate.swift in Sources */,
 				0BE6C54B2811F34F00A11FB9 /* Geo_Weather.xcdatamodeld in Sources */,
 				0BE82CDA2811FE8800B3D434 /* CustomTypes.swift in Sources */,
+				0B44910828148A180061550B /* Themes.swift in Sources */,
 				0BE6C5432811F34F00A11FB9 /* SceneDelegate.swift in Sources */,
+				0B449104281478880061550B /* UIColorExtension.swift in Sources */,
 				0BE82CD82811FE2D00B3D434 /* HomeRepository.swift in Sources */,
 				0BE82CC82811F8CD00B3D434 /* ApiMethods.swift in Sources */,
 			);
