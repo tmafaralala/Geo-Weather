@@ -8,19 +8,37 @@
 import Foundation
 import UIKit
 
-struct ImageProvider {
+class ImageProvider {
+    
+    static let instance = ImageProvider()
+    
+    private init() {
+        
+    }
+    
     var cloudy: UIImage {
-        switch(ThemeProvider.instance.theme) {
-        case .sea:
-            guard let cloudyImage = UIImage(named: "") else {
-                return UIImage()
-            }
-            return cloudyImage
-        case .forest:
-            guard let cloudyImage = UIImage(named: "") else {
-                return UIImage()
-            }
-            return cloudyImage
+        guard let cloudyImage = UIImage(named: deriveImageName(withWeather: .cloudy)) else {
+            return UIImage()
         }
+        return cloudyImage
+    }
+    
+    var sunny: UIImage {
+        guard let sunnyImage = UIImage(named: deriveImageName(withWeather: .sunny)) else {
+            return UIImage()
+        }
+        return sunnyImage
+    }
+    
+    var rainy: UIImage {
+        guard let rainyImage = UIImage(named: deriveImageName(withWeather: .rainy)) else {
+            return UIImage()
+        }
+        return rainyImage
+    }
+    
+    private func deriveImageName(withWeather: Weather) -> String {
+        let imageName = ThemeProvider.instance.theme.rawValue+"_"+withWeather.rawValue
+        return imageName
     }
 }
