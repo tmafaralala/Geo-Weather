@@ -10,6 +10,9 @@
 		0B449104281478880061550B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B449103281478880061550B /* UIColorExtension.swift */; };
 		0B449106281489D80061550B /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B449105281489D80061550B /* ThemeProvider.swift */; };
 		0B44910828148A180061550B /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910728148A180061550B /* Themes.swift */; };
+		0B44910A28148F120061550B /* ImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910928148F120061550B /* ImageProvider.swift */; };
+		0B44910E281499240061550B /* WeatherTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910D281499240061550B /* WeatherTypes.swift */; };
+		0B4491102814A7B50061550B /* UISegmentedControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B44910F2814A7B50061550B /* UISegmentedControlExtension.swift */; };
 		0BE6C5412811F34F00A11FB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5402811F34F00A11FB9 /* AppDelegate.swift */; };
 		0BE6C5432811F34F00A11FB9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5422811F34F00A11FB9 /* SceneDelegate.swift */; };
 		0BE6C5452811F34F00A11FB9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6C5442811F34F00A11FB9 /* HomeViewController.swift */; };
@@ -40,6 +43,9 @@
 		0B449103281478880061550B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		0B449105281489D80061550B /* ThemeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeProvider.swift; sourceTree = "<group>"; };
 		0B44910728148A180061550B /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
+		0B44910928148F120061550B /* ImageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProvider.swift; sourceTree = "<group>"; };
+		0B44910D281499240061550B /* WeatherTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTypes.swift; sourceTree = "<group>"; };
+		0B44910F2814A7B50061550B /* UISegmentedControlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtension.swift; sourceTree = "<group>"; };
 		0BE6C53D2811F34F00A11FB9 /* Geo-Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Geo-Weather.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BE6C5402811F34F00A11FB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BE6C5422811F34F00A11FB9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				0B449103281478880061550B /* UIColorExtension.swift */,
+				0B44910F2814A7B50061550B /* UISegmentedControlExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -186,7 +193,9 @@
 			children = (
 				0BE82CD92811FE8800B3D434 /* CustomTypes.swift */,
 				0B449105281489D80061550B /* ThemeProvider.swift */,
+				0B44910928148F120061550B /* ImageProvider.swift */,
 				0B44910728148A180061550B /* Themes.swift */,
+				0B44910D281499240061550B /* WeatherTypes.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -320,11 +329,14 @@
 				0B449106281489D80061550B /* ThemeProvider.swift in Sources */,
 				0BE6C5412811F34F00A11FB9 /* AppDelegate.swift in Sources */,
 				0BE6C54B2811F34F00A11FB9 /* Geo_Weather.xcdatamodeld in Sources */,
+				0B44910E281499240061550B /* WeatherTypes.swift in Sources */,
 				0BE82CDA2811FE8800B3D434 /* CustomTypes.swift in Sources */,
 				0B44910828148A180061550B /* Themes.swift in Sources */,
 				0BE6C5432811F34F00A11FB9 /* SceneDelegate.swift in Sources */,
 				0B449104281478880061550B /* UIColorExtension.swift in Sources */,
+				0B4491102814A7B50061550B /* UISegmentedControlExtension.swift in Sources */,
 				0BE82CD82811FE2D00B3D434 /* HomeRepository.swift in Sources */,
+				0B44910A28148F120061550B /* ImageProvider.swift in Sources */,
 				0BE82CC82811F8CD00B3D434 /* ApiMethods.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

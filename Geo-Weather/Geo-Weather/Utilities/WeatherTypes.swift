@@ -1,5 +1,5 @@
 //
-//  Themes.swift
+//  WeatherTypes.swift
 //  Geo-Weather
 //
 //  Created by Tshwarelo Mafaralala on 2022/04/23.
@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum Theme: String {
-    case forest
-    case sea
+enum Weather: String {
+    case cloudy
+    case sunny
+    case rainy
 }

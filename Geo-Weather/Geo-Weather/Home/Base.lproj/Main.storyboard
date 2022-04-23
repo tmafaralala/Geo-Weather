@@ -15,16 +15,47 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forest_sunny" translatesAutoresizingMaskIntoConstraints="NO" id="OaI-bh-7QU">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="340"/>
+                            </imageView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Tyb-Fk-t10">
+                                <rect key="frame" x="132" y="52" width="150" height="32"/>
+                                <segments>
+                                    <segment title="Forest"/>
+                                    <segment title="Sea"/>
+                                </segments>
+                                <connections>
+                                    <action selector="themeToggle:" destination="BYZ-38-t0r" eventType="valueChanged" id="ozR-po-Zhv"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="OaI-bh-7QU" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="3g7-T3-8oW"/>
+                            <constraint firstItem="OaI-bh-7QU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="7F9-nC-aze"/>
+                            <constraint firstItem="OaI-bh-7QU" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.379464" id="Ac8-XZ-ggS"/>
+                            <constraint firstItem="Tyb-Fk-t10" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="IuB-WM-1Tz"/>
+                            <constraint firstItem="OaI-bh-7QU" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="QhD-dg-Gne"/>
+                            <constraint firstItem="OaI-bh-7QU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="elf-M6-aRW"/>
+                            <constraint firstItem="OaI-bh-7QU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="g02-tp-rNJ"/>
+                            <constraint firstItem="Tyb-Fk-t10" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.362319" id="mrO-HS-Hgc"/>
+                            <constraint firstItem="Tyb-Fk-t10" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rxG-lN-TCk"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="themeToggler" destination="Tyb-Fk-t10" id="g3Q-ds-p8O"/>
+                        <outlet property="weatherImage" destination="OaI-bh-7QU" id="iPK-xz-P23"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="65" y="62"/>
+            <point key="canvasLocation" x="63.768115942028992" y="61.607142857142854"/>
         </scene>
     </scenes>
     <resources>
+        <image name="forest_sunny" width="360" height="321"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
