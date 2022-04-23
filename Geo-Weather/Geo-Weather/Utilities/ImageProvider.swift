@@ -10,10 +10,17 @@ import UIKit
 
 struct ImageProvider {
     var cloudy: UIImage {
-        switch(ThemeProvider.theme){
-        case .sea {
-                
+        switch(ThemeProvider.instance.theme) {
+        case .sea:
+            guard let cloudyImage = UIImage(named: "") else {
+                return UIImage()
             }
+            return cloudyImage
+        case .forest:
+            guard let cloudyImage = UIImage(named: "") else {
+                return UIImage()
+            }
+            return cloudyImage
         }
     }
 }

@@ -8,6 +8,6 @@
 import Foundation
 
 enum Theme: String {
-    case forest = "forest"
-    case sea = "sea"
+    case forest
+    case sea
 }
