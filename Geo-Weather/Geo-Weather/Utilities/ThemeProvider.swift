@@ -8,22 +8,26 @@
 import Foundation
 
 class ThemeProvider {
-    private var currentTheme: Theme = .forest
+    static let instance = ThemeProvider()
+    private var currentTheme: Theme!
     
     var theme: Theme {
         return currentTheme
     }
     
+    private init() {
+        currentTheme = .forest
+    }
+    
     func changeTheme() {
         if currentTheme == .forest {
             toggle(newTheme: .sea)
-        }
-        else{
+        } else {
             toggle(newTheme: .forest)
         }
     }
     
-    func toggle(newTheme: Theme){
+    private func toggle(newTheme: Theme) {
         currentTheme = newTheme
     }
 }

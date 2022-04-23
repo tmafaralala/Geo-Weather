@@ -8,24 +8,9 @@
 import UIKit
 
 extension UIColor {
-    static var sunny: UIColor {
-        guard let sunnyColor = UIColor(named: "Sunny") else {
-            return .black
-        }
-        return sunnyColor
-    }
+    static let sunny = UIColor(named: "Sunny")!
     
-    static var cloudy: UIColor {
-        guard let cloudyColor = UIColor(named: "Cloudy") else {
-            return .black
-        }
-        return cloudyColor
-    }
+    static let cloudy = UIColor(named: "Cloudy")!
     
-    static var rainy: UIColor {
-        guard let rainyColor = UIColor(named: "Rainy") else {
-            return .black
-        }
-        return rainyColor
-    }
+    static let rainy = UIColor(named: "Rainy")!
 }
