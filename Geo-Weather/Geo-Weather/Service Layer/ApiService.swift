@@ -8,6 +8,9 @@
 import Foundation
 
 class ApiService {
+    
+    static let 
+    
     func invokeServiceCall() {
         
     }
