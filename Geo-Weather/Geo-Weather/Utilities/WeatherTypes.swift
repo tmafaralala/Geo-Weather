@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum Weather: String {
-    case cloudy
+enum WeatherType: String {
+    case clouds
     case sunny
     case rainy
 }

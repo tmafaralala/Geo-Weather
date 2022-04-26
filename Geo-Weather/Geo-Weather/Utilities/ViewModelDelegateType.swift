@@ -11,7 +11,3 @@ protocol ViewModelDelegateType: AnyObject {
     func reloadView()
     func alert()
 }
-
-protocol HomeRepositoryType: AnyObject {
-    func fetchWeatherData()
-}

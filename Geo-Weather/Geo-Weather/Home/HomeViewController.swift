@@ -12,14 +12,18 @@ class HomeViewController: UIViewController {
     @IBOutlet private weak var themeToggler: UISegmentedControl!
     @IBOutlet private weak var weatherImage: UIImageView!
     
+    private lazy var homeViewModel = HomeViewModel(delegate: self,
+                                                   repository: HomeRepository())
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         themeToggler.addBorder()
-        weatherImage.image = ImageProvider.instance.cloudy
+        weatherImage.image = homeViewModel.weatherImage
+        homeViewModel.fetchCurrentWeather()
     }
     
     @IBAction private func themeToggle(_ sender: Any) {
-        ThemeProvider.instance.changeTheme()
+        homeViewModel.changeTheme()
         reloadView()
     }
 
@@ -27,7 +31,9 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: ViewModelDelegateType {
     func reloadView() {
-        weatherImage.image = ImageProvider.instance.cloudy
+        DispatchQueue.main.async {
+            self.weatherImage.image = self.homeViewModel.weatherImage
+        }
     }
     
     func alert() {
