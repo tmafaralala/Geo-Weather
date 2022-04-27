@@ -10,23 +10,14 @@ import Foundation
 typealias HomeResponse = ApiClientResponse<GeoWeather>
 
 protocol HomeRepositoryType: AnyObject {
-    var request: ApiRequest {get}
-    var api: ApiClientType {get}
     func fetchCurrentWeatherData(completion: @escaping(HomeResponse))
 }
 
 class HomeRepository: HomeRepositoryType {
-
-    internal var request: ApiRequest
-    internal var api: ApiClientType
-    
-    init(request: HomeRequest = HomeRequest(),api: ApiClientType = ApiClient()) {
-        self.request = request
-        self.api = api
-    }
-    
     func fetchCurrentWeatherData(completion: @escaping (HomeResponse)) {
-        api.call(with: request, for: GeoWeather.self) { result in
+        let homeRequest = CurrentWeatherRequest()
+        ApiClient.shared.call(with: homeRequest, for: GeoWeather.self) { result in
+            print(result)
             completion(result)
         }
     }

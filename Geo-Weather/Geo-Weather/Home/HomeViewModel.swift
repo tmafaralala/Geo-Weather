@@ -6,22 +6,18 @@
 //
 
 import Foundation
-import UIKit
-import CoreLocation
 
-class HomeViewModel: NSObject, CLLocationManagerDelegate {
+class HomeViewModel {
     private var repository: HomeRepositoryType?
     private weak var delegate: ViewModelDelegateType?
     private var themeProvider: ThemeProviderType
-    private var imageProvider: ImageProviderType
     private var currentWeather: GeoWeather?
-    private lazy var locationManager = CLLocationManager()
     
     init(delegate: ViewModelDelegateType, repository: HomeRepositoryType) {
         self.repository = repository
         self.delegate = delegate
         themeProvider = ThemeProvider()
-        imageProvider = ImageProvider(with: themeProvider)
+
     }
     
     func fetchCurrentWeather() {
@@ -37,20 +33,29 @@ class HomeViewModel: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    var weatherImage: UIImage? {
-        guard let currentWeather = currentWeather else {
+    var weatherImage: String? {
+        guard let currentWeather = currentWeather,
+              let _ = WeatherType(rawValue: String(describing: currentWeather.weather[0].main)) else {
             return nil
         }
 
         let weather = String(describing: currentWeather.weather[0].main)
-        print(weather)
-        guard let weatherType = WeatherType(rawValue: weather.lowercased()) else {
+        return themeProvider.theme.rawValue+"_"+weather.lowercased()
+    }
+    
+    var temperature: String? {
+        guard let temperature = currentWeather?.main.temp else {
             return nil
         }
-        return imageProvider.image(for: weatherType)
+        return String(format: "%.1f", temperature) + "°"
+    }
+    
+    var outLook: String? {
+        currentWeather?.weather[0].main
     }
     
     func changeTheme() {
         themeProvider.changeTheme()
     }
+    
 }

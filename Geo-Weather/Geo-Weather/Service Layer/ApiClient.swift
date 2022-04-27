@@ -9,13 +9,13 @@ import Foundation
 
 typealias ApiClientResponse<Response> = (Result<Response,Error>) -> Void
 
-protocol ApiClientType: AnyObject {
-    func call<Generic: Codable>(with request:ApiRequest,
-                                for response: Generic.Type ,
-                                completion: @escaping(ApiClientResponse<Generic>))
-}
-
-class ApiClient: ApiClientType {
+class ApiClient {
+    
+    static let shared = ApiClient()
+    
+    private init() {
+        
+    }
     
     func call<Generic: Codable>(with request:ApiRequest,
                                 for response: Generic.Type ,

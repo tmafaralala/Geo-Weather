@@ -9,10 +9,10 @@ import Foundation
 
 protocol ApiRequest {
     var build: URLRequest? {get}
-    var urlString: String {get}
-    var method: HttpMethod {get}
-    var headers: [String: String] {get}
-    var urlQueryParameters: [String: Any] {get}
+    var urlString: String {get set}
+    var method: HttpMethod {get set}
+    var headers: [String: String] {get set}
+    var urlQueryParameters: [String: Any] {get set}
 }
 
 extension ApiRequest {
