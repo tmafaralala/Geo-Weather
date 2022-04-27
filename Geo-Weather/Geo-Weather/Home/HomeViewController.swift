@@ -10,6 +10,9 @@ import UIKit
 class HomeViewController: UIViewController {
 
     @IBOutlet private weak var themeToggler: UISegmentedControl!
+    @IBOutlet weak var currentTemp: UILabel!
+    @IBOutlet weak var minimumTemp: UILabel!
+    @IBOutlet weak var maximumTemp: UILabel!
     @IBOutlet weak var forecast: UITableView!
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var weatherOutlook: UILabel!
@@ -20,6 +23,11 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.forecast.delegate = self
+        self.forecast.dataSource = self
+        self.forecast.layer.backgroundColor = UIColor.clear.cgColor
+        self.forecast.backgroundColor = .clear
+        self.forecast.backgroundColor = .clear
         themeToggler.addBorder()
         homeViewModel.fetchCurrentWeather()
     }
@@ -32,18 +40,22 @@ class HomeViewController: UIViewController {
     private func loadWeatherImage() {
         guard let imageName = homeViewModel.weatherImage else {
             weatherImage.image = UIImage()
-            weatherImage.backgroundColor = .rainy
             return
         }
         weatherImage.image = UIImage(named: imageName )
     }
     
     private func loadWeatherinfo() {
-        guard let temp = homeViewModel.temperature,
+        guard let temp = homeViewModel.currTemp,
+              let minTemp = homeViewModel.minTemp,
+              let maxTemp = homeViewModel.maxTemp,
               let outlook = homeViewModel.outLook else {
             return
         }
         temperature.text = temp
+        currentTemp.text = temp
+        minimumTemp.text = minTemp
+        maximumTemp.text = maxTemp
         weatherOutlook.text = outlook
     }
 
@@ -71,10 +83,6 @@ extension HomeViewController: ViewModelDelegateType {
             self.loadWeatherImage()
             self.loadWeatherinfo()
             self.setBackground()
-            self.forecast.delegate = self
-            self.forecast.dataSource = self
-            self.forecast.layer.backgroundColor = UIColor.clear.cgColor
-            self.forecast.backgroundColor = .clear
         }
     }
     
@@ -85,10 +93,14 @@ extension HomeViewController: ViewModelDelegateType {
 
 extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        homeViewModel.forecastCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let forecastCell = forecast.dequeueReusableCell(withIdentifier: "DayForecast") else {
+            return UITableViewCell()
+        }
+        forecastCell.backgroundColor = .clear
+        return forecastCell
     }
 }

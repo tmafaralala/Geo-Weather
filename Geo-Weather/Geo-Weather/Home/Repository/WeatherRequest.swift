@@ -8,11 +8,12 @@
 import Foundation
 import CoreLocation
 
-class CurrentWeatherRequest: NSObject,CLLocationManagerDelegate,ApiRequest {
+class WeatherRequest: NSObject,CLLocationManagerDelegate,ApiRequest {
 
     private let locationManager = CLLocationManager()
     private var lat: Double = 0.0
     private var lon: Double = 0.0
+    private var url: String!
     
     override init() {
         super.init()
@@ -20,11 +21,12 @@ class CurrentWeatherRequest: NSObject,CLLocationManagerDelegate,ApiRequest {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        self.url = Path.current
     }
     
     var urlString: String {
-        get {Path.current}
-        set (path) {self.urlString = path}
+        get {url}
+        set (path) {self.url = path}
     }
     
     var method: HttpMethod {

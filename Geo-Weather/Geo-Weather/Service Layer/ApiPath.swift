@@ -7,15 +7,15 @@
 
 import Foundation
 
-let baseURL = "https://api.openweathermap.org/data/2.5/weather?"
+let baseURL = "https://api.openweathermap.org/data/2.5"
 
 struct Path {
     
     static var current: String {
-        return "\(baseURL)/current"
+        return "\(baseURL)/weather?"
     }
     
     static var forecast: String {
-        return "\(baseURL)/forecast"
+        return "\(baseURL)/forecast?"
     }
 }
