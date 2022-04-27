@@ -10,27 +10,97 @@ import UIKit
 class HomeViewController: UIViewController {
 
     @IBOutlet private weak var themeToggler: UISegmentedControl!
+    @IBOutlet weak var currentTemp: UILabel!
+    @IBOutlet weak var minimumTemp: UILabel!
+    @IBOutlet weak var maximumTemp: UILabel!
+    @IBOutlet weak var forecast: UITableView!
+    @IBOutlet weak var temperature: UILabel!
+    @IBOutlet weak var weatherOutlook: UILabel!
     @IBOutlet private weak var weatherImage: UIImageView!
+    
+    private lazy var homeViewModel = HomeViewModel(delegate: self,
+                                                   repository: HomeRepository())
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.forecast.delegate = self
+        self.forecast.dataSource = self
+        self.forecast.layer.backgroundColor = UIColor.clear.cgColor
+        self.forecast.backgroundColor = .clear
+        self.forecast.backgroundColor = .clear
         themeToggler.addBorder()
-        weatherImage.image = ImageProvider.instance.cloudy
+        homeViewModel.fetchCurrentWeather()
     }
     
     @IBAction private func themeToggle(_ sender: Any) {
-        ThemeProvider.instance.changeTheme()
-        reloadView()
+        homeViewModel.changeTheme()
+        homeViewModel.fetchCurrentWeather()
+    }
+    
+    private func loadWeatherImage() {
+        guard let imageName = homeViewModel.weatherImage else {
+            weatherImage.image = UIImage()
+            return
+        }
+        weatherImage.image = UIImage(named: imageName )
+    }
+    
+    private func loadWeatherinfo() {
+        guard let temp = homeViewModel.currTemp,
+              let minTemp = homeViewModel.minTemp,
+              let maxTemp = homeViewModel.maxTemp,
+              let outlook = homeViewModel.outLook else {
+            return
+        }
+        temperature.text = temp
+        currentTemp.text = temp
+        minimumTemp.text = minTemp
+        maximumTemp.text = maxTemp
+        weatherOutlook.text = outlook
     }
 
+    private func setBackground() {
+        guard let weather = homeViewModel.outLook,
+              let weatherType = WeatherType(rawValue: weather.lowercased()) else {
+            self.view.backgroundColor = .cloudy
+            return
+        }
+        switch (weatherType) {
+        case .clouds:
+            self.view.backgroundColor = .cloudy
+        case .rainy:
+            self.view.backgroundColor = .rainy
+        case .sunny:
+            self.view.backgroundColor = .sunny
+        }
+
+    }
 }
 
 extension HomeViewController: ViewModelDelegateType {
     func reloadView() {
-        weatherImage.image = ImageProvider.instance.cloudy
+        DispatchQueue.main.async {
+            self.loadWeatherImage()
+            self.loadWeatherinfo()
+            self.setBackground()
+        }
     }
     
     func alert() {
         
+    }
+}
+
+extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        homeViewModel.forecastCount
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let forecastCell = forecast.dequeueReusableCell(withIdentifier: "DayForecast") else {
+            return UITableViewCell()
+        }
+        forecastCell.backgroundColor = .clear
+        return forecastCell
     }
 }
