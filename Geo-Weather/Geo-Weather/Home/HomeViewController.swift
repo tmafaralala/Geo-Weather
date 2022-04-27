@@ -10,6 +10,7 @@ import UIKit
 class HomeViewController: UIViewController {
 
     @IBOutlet private weak var themeToggler: UISegmentedControl!
+    @IBOutlet weak var forecast: UITableView!
     @IBOutlet weak var temperature: UILabel!
     @IBOutlet weak var weatherOutlook: UILabel!
     @IBOutlet private weak var weatherImage: UIImageView!
@@ -70,10 +71,24 @@ extension HomeViewController: ViewModelDelegateType {
             self.loadWeatherImage()
             self.loadWeatherinfo()
             self.setBackground()
+            self.forecast.delegate = self
+            self.forecast.dataSource = self
+            self.forecast.layer.backgroundColor = UIColor.clear.cgColor
+            self.forecast.backgroundColor = .clear
         }
     }
     
     func alert() {
         
+    }
+}
+
+extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
     }
 }
