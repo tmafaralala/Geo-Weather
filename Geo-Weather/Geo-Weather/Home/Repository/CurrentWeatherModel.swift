@@ -14,11 +14,23 @@ struct GeoWeather: Codable {
     let main: Main
     let dt: Int
     let name: String
+    let country: Country
+    enum CodingKeys: String, CodingKey {
+        case coord , weather, main, dt, name
+        case country = "sys"
+    }
 }
 
 // MARK: - Coord
 struct Coord: Codable {
     let lon, lat: Double
+}
+
+struct Country: Codable {
+    let name: String
+    enum CodingKeys: String, CodingKey {
+        case name = "country"
+    }
 }
 
 // MARK: - Main
