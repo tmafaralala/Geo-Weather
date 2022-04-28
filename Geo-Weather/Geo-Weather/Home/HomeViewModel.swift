@@ -9,17 +9,22 @@ import Foundation
 import CoreLocation
 
 class HomeViewModel: NSObject,CLLocationManagerDelegate {
-    private var repository: HomeRepositoryType?
+    private var networkRepository: HomeRepositoryType?
+    private var localRepository: LocalHomeRepositoryType?
     private weak var delegate: ViewModelDelegateType?
     private var themeProvider: ThemeProviderType!
     private var currentWeather: GeoWeather?
     private var forecastWeather: [WeeklyForecast]?
+    private var loactionIsFavourite: Bool = false
     
     private let locationManager = CLLocationManager()
     
-    init(delegate: ViewModelDelegateType, repository: HomeRepositoryType) {
+    init(delegate: ViewModelDelegateType,
+         networkRepository: HomeRepositoryType,
+         localRepository: LocalHomeRepositoryType) {
         super.init()
-        self.repository = repository
+        self.networkRepository = networkRepository
+        self.localRepository = localRepository
         self.delegate = delegate
         self.themeProvider = ThemeProvider()
         locationManager.delegate = self
@@ -76,7 +81,7 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
     }
     
     func fetchCurrentWeather() {
-        repository?.fetchCurrentWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
+        networkRepository?.fetchCurrentWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
                                             lon: locationManager.location?.coordinate.longitude ?? 0.0 ) { [weak self] result in
             switch result {
             case .success(let weatherData):
@@ -91,7 +96,7 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
     }
     
     func fetchForecastWeather() {
-        repository?.fetchForecastWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
+        networkRepository?.fetchForecastWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
                                              lon: locationManager.location?.coordinate.longitude ?? 0.0) { [weak self] result in
             switch result {
             case .success(let weatherData):
@@ -127,5 +132,24 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
        fetchCurrentWeather()
+    }
+    
+    func saveLocation(named location: String) {
+        guard let lon = currentWeather?.coord.lon,
+              let lat = currentWeather?.coord.lat else {
+            return
+        }
+        guard let context = PersistanceContext.shared else {
+            return
+        }
+        let newLocation = FavouriteLocation(context: context)
+        newLocation.lon = lon
+        newLocation.lat = lat
+        newLocation.location = locationName
+        newLocation.name = location
+        localRepository?.saveLocation(location: newLocation) {  [weak self] result in
+            self?.loactionIsFavourite = result
+            self?.delegate?.reloadView()
+        }
     }
 }
