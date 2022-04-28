@@ -15,6 +15,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var maximumTemp: UILabel!
     @IBOutlet weak var forecast: UITableView!
     @IBOutlet weak var temperature: UILabel!
+    @IBOutlet weak var locationName: UILabel!
     @IBOutlet weak var weatherOutlook: UILabel!
     @IBOutlet private weak var weatherImage: UIImageView!
     
@@ -74,6 +75,8 @@ class HomeViewController: UIViewController {
             self.view.backgroundColor = .sunny
         }
 
+    }
+    @IBAction func saveLocation(_ sender: Any) {
     }
 }
 

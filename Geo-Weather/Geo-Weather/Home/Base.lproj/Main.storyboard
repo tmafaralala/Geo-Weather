@@ -195,6 +195,9 @@
                                         <buttonConfiguration key="configuration" style="plain" image="star" catalog="system" title="">
                                             <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="saveLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XGt-dS-RGa"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -228,8 +231,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="currentTemp" destination="rtm-Zh-Bgd" id="Az9-fB-gCy"/>
+                        <outlet property="currentTemp" destination="rtm-Zh-Bgd" id="3J4-oB-7Tq"/>
                         <outlet property="forecast" destination="ogZ-IL-BYb" id="eHC-DB-LjW"/>
+                        <outlet property="locationName" destination="DMl-L2-F7z" id="VUq-xU-jCn"/>
                         <outlet property="maximumTemp" destination="j7b-fE-5E4" id="rG1-hJ-9Hm"/>
                         <outlet property="minimumTemp" destination="FjL-ei-fBP" id="zSY-B0-WLP"/>
                         <outlet property="temperature" destination="nBc-NX-UYx" id="Woc-Km-ePo"/>
