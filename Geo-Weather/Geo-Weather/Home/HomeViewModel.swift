@@ -6,18 +6,26 @@
 //
 
 import Foundation
+import CoreLocation
 
-class HomeViewModel {
+class HomeViewModel: NSObject,CLLocationManagerDelegate {
     private var repository: HomeRepositoryType?
     private weak var delegate: ViewModelDelegateType?
-    private var themeProvider: ThemeProviderType
+    private var themeProvider: ThemeProviderType!
     private var currentWeather: GeoWeather?
     private var forecastWeather: [WeeklyForecast]?
     
+    private let locationManager = CLLocationManager()
+    
     init(delegate: ViewModelDelegateType, repository: HomeRepositoryType) {
+        super.init()
         self.repository = repository
         self.delegate = delegate
-        themeProvider = ThemeProvider()
+        self.themeProvider = ThemeProvider()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     var minTemp: String? {
@@ -64,7 +72,8 @@ class HomeViewModel {
     }
     
     func fetchCurrentWeather() {
-        repository?.fetchCurrentWeatherData() { [weak self] result in
+        repository?.fetchCurrentWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
+                                            lon: locationManager.location?.coordinate.longitude ?? 0.0 ) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.currentWeather = weatherData
@@ -77,7 +86,8 @@ class HomeViewModel {
     }
     
     func fetchForecastWeather() {
-        repository?.fetchForecastWeatherData() { [weak self] result in
+        repository?.fetchForecastWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
+                                             lon: locationManager.location?.coordinate.longitude ?? 0.0) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.forecastWeather = self?.filterWeatherData(for: weatherData.forecastList)
@@ -108,5 +118,9 @@ class HomeViewModel {
             iterator += 1
         }
         return filterData
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+       fetchCurrentWeather()
     }
 }

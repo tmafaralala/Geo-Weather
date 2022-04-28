@@ -8,20 +8,18 @@
 import Foundation
 import CoreLocation
 
-class WeatherRequest: NSObject,CLLocationManagerDelegate,ApiRequest {
+class WeatherRequest: ApiRequest {
 
-    private let locationManager = CLLocationManager()
     private var lat: Double = 0.0
     private var lon: Double = 0.0
     private var url: String!
     
-    override init() {
-        super.init()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        self.url = Path.current
+    init(lat: Double, lon: Double, url: String? = Path.current) {
+        self.lat = lat
+        self.lon = lon
+        if let url = url {
+            self.url = url
+        }
     }
     
     var urlString: String {
@@ -38,8 +36,8 @@ class WeatherRequest: NSObject,CLLocationManagerDelegate,ApiRequest {
         get {
             ["appid"    : Constants.ApiKeys.weatherApiKey.rawValue,
              "units"    : "metric",
-             "lat"      : locationManager.location?.coordinate.latitude ?? 0.0,
-             "lon"      : locationManager.location?.coordinate.longitude ?? 0.0
+             "lat"      : lat,
+             "lon"      : lon
             ]
         }
         set (params) {
@@ -53,4 +51,5 @@ class WeatherRequest: NSObject,CLLocationManagerDelegate,ApiRequest {
             self.headers = headers
         }
     }
+
 }
