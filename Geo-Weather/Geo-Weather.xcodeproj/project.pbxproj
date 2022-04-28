@@ -74,7 +74,7 @@
 		0BE82CD42811FCD700B3D434 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		0BE82CD92811FE8800B3D434 /* ViewModelDelegateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelDelegateType.swift; sourceTree = "<group>"; };
 		0BF6DBE4281971A700B81B0E /* ThemeProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeProvider.swift; sourceTree = "<group>"; };
-		0BF6DBE6281988BF00B81B0E /* ForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ForecastCell.swift; path = "Geo-Weather/Home/ForecastCell.swift"; sourceTree = SOURCE_ROOT; };
+		0BF6DBE6281988BF00B81B0E /* ForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ForecastCell.swift; path = "Geo-Weather/Home/UIElements/ForecastCell.swift"; sourceTree = SOURCE_ROOT; };
 		0BF6DBE82819ED8900B81B0E /* ForecastWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastWeatherModel.swift; sourceTree = "<group>"; };
 		0BF6DBEA281A0B8100B81B0E /* NSDateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +97,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B4182F6281A14AA00CD9516 /* UIElements */ = {
+			isa = PBXGroup;
+			children = (
+				0BF6DBE6281988BF00B81B0E /* ForecastCell.swift */,
+			);
+			path = UIElements;
+			sourceTree = "<group>";
+		};
 		0B4491022814785A0061550B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,7 +121,6 @@
 				0B6126532817170F00E5F28B /* CurrentWeatherModel.swift */,
 				0B6126572817195A00E5F28B /* WeatherRequest.swift */,
 				0B612655281718EA00E5F28B /* HomeRepository.swift */,
-				0BF6DBE6281988BF00B81B0E /* ForecastCell.swift */,
 				0BF6DBE82819ED8900B81B0E /* ForecastWeatherModel.swift */,
 			);
 			path = Repository;
@@ -188,6 +195,7 @@
 			children = (
 				0BE6C5442811F34F00A11FB9 /* HomeViewController.swift */,
 				0BE82CD42811FCD700B3D434 /* HomeViewModel.swift */,
+				0B4182F6281A14AA00CD9516 /* UIElements */,
 				0B612652281716F400E5F28B /* Repository */,
 				0BE6C5462811F34F00A11FB9 /* Main.storyboard */,
 			);
