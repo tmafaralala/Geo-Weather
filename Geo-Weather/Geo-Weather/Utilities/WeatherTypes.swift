@@ -11,4 +11,5 @@ enum WeatherType: String {
     case clouds
     case sunny
     case rainy
+    case clear
 }
