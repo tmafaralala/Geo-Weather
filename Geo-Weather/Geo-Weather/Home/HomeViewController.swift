@@ -98,7 +98,9 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let forecastCell = forecast.dequeueReusableCell(withIdentifier: "DayForecast") as? ForecastCell, let forecast = homeViewModel.foreCast(at: indexPath.item) else {
+        guard let forecastCell = forecast.dequeueReusableCell(withIdentifier: "DayForecast")
+                as? ForecastCell,
+              let forecast = homeViewModel.foreCast(at: indexPath.item) else {
             return UITableViewCell()
         }
         forecastCell.setUpCell(for: forecast)
