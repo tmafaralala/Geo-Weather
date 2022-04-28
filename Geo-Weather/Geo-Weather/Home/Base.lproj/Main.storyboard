@@ -87,7 +87,7 @@
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rain" translatesAutoresizingMaskIntoConstraints="NO" id="1HE-Wo-L1V">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rainy" translatesAutoresizingMaskIntoConstraints="NO" id="1HE-Wo-L1V">
                                                             <rect key="frame" x="169.5" y="0.0" width="35" height="35"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="35" id="aCZ-rX-uTM"/>
@@ -113,6 +113,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="Cloudy"/>
+                                        <connections>
+                                            <outlet property="day" destination="7Fc-bV-vwT" id="RbF-cC-OQB"/>
+                                            <outlet property="icon" destination="1HE-Wo-L1V" id="ZSE-lj-8nB"/>
+                                            <outlet property="temperature" destination="kaz-j9-Af4" id="SLa-K5-orj"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -218,7 +223,7 @@
     </scenes>
     <resources>
         <image name="forest_sunny" width="360" height="321"/>
-        <image name="rain" width="13" height="13"/>
+        <image name="rainy" width="13" height="13"/>
         <namedColor name="Cloudy">
             <color red="0.33000001311302185" green="0.43999999761581421" blue="0.47999998927116394" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

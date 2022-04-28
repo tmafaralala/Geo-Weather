@@ -70,7 +70,7 @@ class HomeViewController: UIViewController {
             self.view.backgroundColor = .cloudy
         case .rainy:
             self.view.backgroundColor = .rainy
-        case .sunny:
+        case .sunny, .clear:
             self.view.backgroundColor = .sunny
         }
 
@@ -83,6 +83,7 @@ extension HomeViewController: ViewModelDelegateType {
             self.loadWeatherImage()
             self.loadWeatherinfo()
             self.setBackground()
+            self.forecast.reloadData()
         }
     }
     
@@ -97,9 +98,12 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let forecastCell = forecast.dequeueReusableCell(withIdentifier: "DayForecast") else {
+        guard let forecastCell = forecast.dequeueReusableCell(withIdentifier: "DayForecast")
+                as? ForecastCell,
+              let forecast = homeViewModel.foreCast(at: indexPath.item) else {
             return UITableViewCell()
         }
+        forecastCell.setUpCell(for: forecast)
         forecastCell.backgroundColor = .clear
         return forecastCell
     }
