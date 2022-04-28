@@ -6,20 +6,34 @@
 //
 
 import Foundation
+import CoreLocation
 
-class HomeViewModel {
-    private var repository: HomeRepositoryType?
+class HomeViewModel: NSObject {
+    private var networkRepository: HomeRepositoryType?
+    private var localRepository: LocalHomeRepositoryType?
     private weak var delegate: ViewModelDelegateType?
-    private var themeProvider: ThemeProviderType
+    private var themeProvider: ThemeProviderType!
     private var currentWeather: GeoWeather?
     private var forecastWeather: [WeeklyForecast]?
+    private var loactionIsFavourite: Bool = false
+    private let locationManager = CLLocationManager()
     
-    init(delegate: ViewModelDelegateType, repository: HomeRepositoryType) {
-        self.repository = repository
+    init(delegate: ViewModelDelegateType,
+         networkRepository: HomeRepositoryType,
+         localRepository: LocalHomeRepositoryType) {
+        super.init()
+        self.networkRepository = networkRepository
+        self.localRepository = localRepository
         self.delegate = delegate
-        themeProvider = ThemeProvider()
+        self.themeProvider = ThemeProvider()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
     }
-    
+
+// MARK: - Properties
+
     var minTemp: String? {
         guard let temperature = currentWeather?.main.tempMin else {
             return nil
@@ -36,6 +50,10 @@ class HomeViewModel {
     
     var outLook: String? {
         currentWeather?.weather[0].main
+    }
+    
+    var locationName: String {
+        (currentWeather?.name ?? "")+", "+(currentWeather?.country.name ?? "")
     }
     
     var weatherImage: String? {
@@ -58,13 +76,19 @@ class HomeViewModel {
     var forecastCount: Int {
         forecastWeather?.count ?? 0
     }
-    
+
+// MARK: - Methods
     func foreCast(at: Int) -> WeeklyForecast? {
           return forecastWeather?[at]
     }
     
     func fetchCurrentWeather() {
-        repository?.fetchCurrentWeatherData() { [weak self] result in
+        guard let lat = locationManager.location?.coordinate.latitude, let lon = locationManager.location?.coordinate.longitude else {
+            return
+        }
+        
+        networkRepository?.fetchCurrentWeatherData(lat: lat,
+                                                   lon: lon ) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.currentWeather = weatherData
@@ -77,7 +101,11 @@ class HomeViewModel {
     }
     
     func fetchForecastWeather() {
-        repository?.fetchForecastWeatherData() { [weak self] result in
+        guard let lat = locationManager.location?.coordinate.latitude, let lon = locationManager.location?.coordinate.longitude else {
+            return
+        }
+        networkRepository?.fetchForecastWeatherData(lat: lat,
+                                                    lon: lon) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.forecastWeather = self?.filterWeatherData(for: weatherData.forecastList)
@@ -108,5 +136,34 @@ class HomeViewModel {
             iterator += 1
         }
         return filterData
+    }
+    
+    func saveLocation(named location: String) {
+        guard let lon = currentWeather?.coord.lon,
+              let lat = currentWeather?.coord.lat else {
+            return
+        }
+        guard let context = PersistanceContext.shared else {
+            return
+        }
+        let newLocation = FavouriteLocation(context: context)
+        newLocation.lon = lon
+        newLocation.lat = lat
+        newLocation.location = locationName
+        newLocation.name = location
+        localRepository?.saveLocation(location: newLocation) {  [weak self] result in
+            self?.loactionIsFavourite = result
+            self?.delegate?.reloadView()
+        }
+    }
+}
+
+extension HomeViewModel: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+       fetchCurrentWeather()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+         print("error:: \(error.localizedDescription)")
     }
 }
