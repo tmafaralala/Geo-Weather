@@ -70,7 +70,7 @@ class HomeViewController: UIViewController {
             self.view.backgroundColor = .cloudy
         case .rainy:
             self.view.backgroundColor = .rainy
-        case .sunny:
+        case .sunny, .clear:
             self.view.backgroundColor = .sunny
         }
 
