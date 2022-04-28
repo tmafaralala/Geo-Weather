@@ -19,6 +19,7 @@ class HomeViewController: UIViewController {
     @IBOutlet private weak var locationName: UILabel!
     @IBOutlet private weak var weatherOutlook: UILabel!
     @IBOutlet private weak var weatherImage: UIImageView!
+    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
     
     private lazy var homeViewModel = HomeViewModel(delegate: self,
                                                    networkRepository: HomeRepository(),
@@ -32,12 +33,12 @@ class HomeViewController: UIViewController {
         self.forecast.backgroundColor = .clear
         self.forecast.backgroundColor = .clear
         themeToggler.addBorder()
-        homeViewModel.fetchCurrentWeather()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.tintColor = .white
+        homeViewModel.fetchCurrentWeather()
     }
     
     @IBAction private func themeToggle(_ sender: Any) {
@@ -77,7 +78,7 @@ class HomeViewController: UIViewController {
         switch (weatherType) {
         case .clouds:
             self.view.backgroundColor = .cloudy
-        case .rainy:
+        case .rainy, .rain:
             self.view.backgroundColor = .rainy
         case .sunny, .clear:
             self.view.backgroundColor = .sunny
@@ -116,6 +117,10 @@ extension HomeViewController: ViewModelDelegateType {
     
     func alert() {
         
+    }
+    
+    func loading() {
+
     }
 }
 

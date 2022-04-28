@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class HomeViewModel: NSObject,CLLocationManagerDelegate {
+class HomeViewModel: NSObject {
     private var networkRepository: HomeRepositoryType?
     private var localRepository: LocalHomeRepositoryType?
     private weak var delegate: ViewModelDelegateType?
@@ -16,7 +16,6 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
     private var currentWeather: GeoWeather?
     private var forecastWeather: [WeeklyForecast]?
     private var loactionIsFavourite: Bool = false
-    
     private let locationManager = CLLocationManager()
     
     init(delegate: ViewModelDelegateType,
@@ -32,7 +31,9 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
-    
+
+// MARK: - Properties
+
     var minTemp: String? {
         guard let temperature = currentWeather?.main.tempMin else {
             return nil
@@ -75,20 +76,24 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
     var forecastCount: Int {
         forecastWeather?.count ?? 0
     }
-    
+
+// MARK: - Methods
     func foreCast(at: Int) -> WeeklyForecast? {
           return forecastWeather?[at]
     }
     
     func fetchCurrentWeather() {
-        networkRepository?.fetchCurrentWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
-                                            lon: locationManager.location?.coordinate.longitude ?? 0.0 ) { [weak self] result in
+        guard let lat = locationManager.location?.coordinate.latitude, let lon = locationManager.location?.coordinate.longitude else {
+            return
+        }
+        
+        networkRepository?.fetchCurrentWeatherData(lat: lat,
+                                                   lon: lon ) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.currentWeather = weatherData
                 self?.fetchForecastWeather()
             case .failure(let dataError):
-                
                 print(dataError)
                 self?.delegate?.alert()
             }
@@ -96,8 +101,11 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
     }
     
     func fetchForecastWeather() {
-        networkRepository?.fetchForecastWeatherData(lat: locationManager.location?.coordinate.latitude ?? 0.0,
-                                             lon: locationManager.location?.coordinate.longitude ?? 0.0) { [weak self] result in
+        guard let lat = locationManager.location?.coordinate.latitude, let lon = locationManager.location?.coordinate.longitude else {
+            return
+        }
+        networkRepository?.fetchForecastWeatherData(lat: lat,
+                                                    lon: lon) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.forecastWeather = self?.filterWeatherData(for: weatherData.forecastList)
@@ -130,10 +138,6 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
         return filterData
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-       fetchCurrentWeather()
-    }
-    
     func saveLocation(named location: String) {
         guard let lon = currentWeather?.coord.lon,
               let lat = currentWeather?.coord.lat else {
@@ -151,5 +155,15 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
             self?.loactionIsFavourite = result
             self?.delegate?.reloadView()
         }
+    }
+}
+
+extension HomeViewModel: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+       fetchCurrentWeather()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+         print("error:: \(error.localizedDescription)")
     }
 }

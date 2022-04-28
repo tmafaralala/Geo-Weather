@@ -199,6 +199,14 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="uDa-eD-nQc">
+                                <rect key="frame" x="132" y="373" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="ms0-f0-jHi"/>
+                                    <constraint firstAttribute="width" constant="150" id="qim-ZG-crd"/>
+                                </constraints>
+                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="Sunny"/>
@@ -213,6 +221,7 @@
                             <constraint firstItem="4z5-Ks-jcM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8NN-BZ-INH"/>
                             <constraint firstItem="UQa-av-Kpl" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9BJ-jf-OxN"/>
                             <constraint firstItem="ogZ-IL-BYb" firstAttribute="top" secondItem="AFV-3I-JQg" secondAttribute="bottom" multiplier="1.05" id="9Kh-bT-MdG"/>
+                            <constraint firstItem="uDa-eD-nQc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9yE-6g-H2e"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ogZ-IL-BYb" secondAttribute="bottom" id="GKm-g9-JU3"/>
                             <constraint firstAttribute="trailing" secondItem="ASl-FR-UWp" secondAttribute="trailing" id="LuQ-4b-aYR"/>
                             <constraint firstItem="ASl-FR-UWp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Ly9-eo-Mxb"/>
@@ -225,6 +234,7 @@
                             <constraint firstItem="SKR-cG-8HX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hyI-xp-PLJ"/>
                             <constraint firstItem="UQa-av-Kpl" firstAttribute="top" secondItem="OaI-bh-7QU" secondAttribute="bottom" multiplier="1.04" id="n5L-eU-KKY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="SKR-cG-8HX" secondAttribute="trailing" id="n5Z-uu-c6F"/>
+                            <constraint firstItem="uDa-eD-nQc" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="qoU-Bd-BC6"/>
                             <constraint firstAttribute="trailing" secondItem="AFV-3I-JQg" secondAttribute="trailing" id="w0n-bp-Kgr"/>
                             <constraint firstItem="OaI-bh-7QU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yne-K0-Nbg"/>
                         </constraints>
@@ -235,6 +245,7 @@
                     <connections>
                         <outlet property="currentTemp" destination="rtm-Zh-Bgd" id="3J4-oB-7Tq"/>
                         <outlet property="forecast" destination="ogZ-IL-BYb" id="eHC-DB-LjW"/>
+                        <outlet property="loadingSpinner" destination="uDa-eD-nQc" id="jgR-4U-ZS0"/>
                         <outlet property="locationName" destination="DMl-L2-F7z" id="VUq-xU-jCn"/>
                         <outlet property="maximumTemp" destination="j7b-fE-5E4" id="rG1-hJ-9Hm"/>
                         <outlet property="minimumTemp" destination="FjL-ei-fBP" id="zSY-B0-WLP"/>

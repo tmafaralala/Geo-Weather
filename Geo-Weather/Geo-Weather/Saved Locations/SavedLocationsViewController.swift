@@ -17,12 +17,13 @@ class SavedLocationsViewController: UIViewController {
         super.viewDidLoad()
         savedLocations.delegate = self
         savedLocations.dataSource = self
-        savedLocationsViewModel.fetchSavedLocations()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.tintColor = .red
+        savedLocationsViewModel.fetchSavedLocations()
     }
     
 }
@@ -35,6 +36,10 @@ extension SavedLocationsViewController: ViewModelDelegateType {
     }
     
     func alert() {
+
+    }
+    
+    func loading() {
 
     }
 }
