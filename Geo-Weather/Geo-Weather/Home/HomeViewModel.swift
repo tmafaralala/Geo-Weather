@@ -59,6 +59,10 @@ class HomeViewModel {
         forecastWeather?.count ?? 0
     }
     
+    func foreCast(at: Int) -> WeeklyForecast? {
+          return forecastWeather?[at]
+    }
+    
     func fetchCurrentWeather() {
         repository?.fetchCurrentWeatherData() { [weak self] result in
             switch result {

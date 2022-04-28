@@ -10,4 +10,12 @@ import UIKit
 
 class ForecastCell: UITableViewCell {
 
+    @IBOutlet private weak var day: UILabel!
+    @IBOutlet private weak var icon: UIImageView!
+    @IBOutlet private weak var temperature: UILabel!
+    
+    func setUpCell(for forecast: WeeklyForecast) {
+        day.text = forecast.dayOfWeek
+        temperature.text = String(format: "%.1f", forecast.temperature) + "°"
+    }
 }

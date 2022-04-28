@@ -113,6 +113,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="Cloudy"/>
+                                        <connections>
+                                            <outlet property="day" destination="7Fc-bV-vwT" id="RbF-cC-OQB"/>
+                                            <outlet property="icon" destination="1HE-Wo-L1V" id="ZSE-lj-8nB"/>
+                                            <outlet property="temperature" destination="kaz-j9-Af4" id="SLa-K5-orj"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
