@@ -14,7 +14,9 @@ class WeatherRequest: ApiRequest {
     private var lon: Double = 0.0
     private var url: String!
     
-    init(lat: Double, lon: Double, url: String? = Path.current) {
+    init(lat: Double,
+         lon: Double,
+         url: String? = Path.current) {
         self.lat = lat
         self.lon = lon
         if let url = url {

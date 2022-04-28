@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 typealias ApiClientResponse<Response> = (Result<Response,Error>) -> Void
 
@@ -27,11 +28,10 @@ class ApiClient {
             if let error = error {
                 return completion(.failure(error))
             }
-            
+
             guard let data = data else {
                 return completion(.failure(ApiError.invalidResponse))
             }
-
             do {
                 let result = try JSONDecoder().decode(response.self, from: data)
                 return completion(.success(result))

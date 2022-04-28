@@ -35,7 +35,7 @@ class ForecastCell: UITableViewCell {
                 return UIImage()
             }
             return image
-        case .rainy:
+        case .rainy, .rain:
             guard let image = UIImage(named: "rainy") else {
                 return UIImage()
             }

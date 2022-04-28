@@ -6,20 +6,24 @@
 //
 
 import UIKit
+import CoreData
 
 class HomeViewController: UIViewController {
 
     @IBOutlet private weak var themeToggler: UISegmentedControl!
-    @IBOutlet weak var currentTemp: UILabel!
-    @IBOutlet weak var minimumTemp: UILabel!
-    @IBOutlet weak var maximumTemp: UILabel!
-    @IBOutlet weak var forecast: UITableView!
-    @IBOutlet weak var temperature: UILabel!
-    @IBOutlet weak var weatherOutlook: UILabel!
+    @IBOutlet private weak var currentTemp: UILabel!
+    @IBOutlet private weak var minimumTemp: UILabel!
+    @IBOutlet private weak var maximumTemp: UILabel!
+    @IBOutlet private weak var forecast: UITableView!
+    @IBOutlet private weak var temperature: UILabel!
+    @IBOutlet private weak var locationName: UILabel!
+    @IBOutlet private weak var weatherOutlook: UILabel!
     @IBOutlet private weak var weatherImage: UIImageView!
+    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
     
     private lazy var homeViewModel = HomeViewModel(delegate: self,
-                                                   repository: HomeRepository())
+                                                   networkRepository: HomeRepository(),
+                                                   localRepository: LocalHomeRepository())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +33,11 @@ class HomeViewController: UIViewController {
         self.forecast.backgroundColor = .clear
         self.forecast.backgroundColor = .clear
         themeToggler.addBorder()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.tintColor = .white
         homeViewModel.fetchCurrentWeather()
     }
     
@@ -52,6 +61,7 @@ class HomeViewController: UIViewController {
               let outlook = homeViewModel.outLook else {
             return
         }
+        locationName.text = homeViewModel.locationName
         temperature.text = temp
         currentTemp.text = temp
         minimumTemp.text = minTemp
@@ -68,13 +78,31 @@ class HomeViewController: UIViewController {
         switch (weatherType) {
         case .clouds:
             self.view.backgroundColor = .cloudy
-        case .rainy:
+        case .rainy, .rain:
             self.view.backgroundColor = .rainy
         case .sunny, .clear:
             self.view.backgroundColor = .sunny
         }
 
     }
+    @IBAction private func saveLocation(_ sender: Any) {
+        let alertController = UIAlertController(title: "Location nickname.",
+                                                message: nil,
+                                                preferredStyle: .alert)
+        alertController.addTextField()
+        alertController.textFields?[0].placeholder = "example: Home"
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let location = alertController.textFields?[0].text else {
+                return
+            }
+            self.homeViewModel.saveLocation(named: location )
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+
 }
 
 extension HomeViewController: ViewModelDelegateType {
@@ -89,6 +117,10 @@ extension HomeViewController: ViewModelDelegateType {
     
     func alert() {
         
+    }
+    
+    func loading() {
+
     }
 }
 
