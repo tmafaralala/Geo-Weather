@@ -46,6 +46,10 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
         currentWeather?.weather[0].main
     }
     
+    var locationName: String {
+        (currentWeather?.name ?? "")+", "+(currentWeather?.country.name ?? "")
+    }
+    
     var weatherImage: String? {
         guard let currentWeather = currentWeather,
               let _ = WeatherType(rawValue: String(describing: currentWeather.weather[0].main).lowercased()) else {
@@ -79,6 +83,7 @@ class HomeViewModel: NSObject,CLLocationManagerDelegate {
                 self?.currentWeather = weatherData
                 self?.fetchForecastWeather()
             case .failure(let dataError):
+                
                 print(dataError)
                 self?.delegate?.alert()
             }
