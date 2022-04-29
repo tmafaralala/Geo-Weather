@@ -17,13 +17,17 @@ class SavedLocationsViewController: UIViewController {
         super.viewDidLoad()
         savedLocations.delegate = self
         savedLocations.dataSource = self
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.tintColor = .red
-        savedLocationsViewModel.fetchSavedLocations()
+        DispatchQueue.main.async {
+            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+                return
+            }
+            self.savedLocationsViewModel.fetchSavedLocations(context: context)
+        }
     }
     
 }

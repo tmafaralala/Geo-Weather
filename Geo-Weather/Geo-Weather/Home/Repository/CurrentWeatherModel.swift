@@ -12,11 +12,10 @@ struct GeoWeather: Codable {
     let coord: Coord
     let weather: [Weather]
     let main: Main
-    let dt: Int
     let name: String
     let country: Country
     enum CodingKeys: String, CodingKey {
-        case coord , weather, main, dt, name
+        case coord , weather, main, name
         case country = "sys"
     }
 }

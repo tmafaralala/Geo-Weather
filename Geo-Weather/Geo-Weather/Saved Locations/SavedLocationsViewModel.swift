@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 class SavedLocationsViewModel {
     private weak var delegate: ViewModelDelegateType?
@@ -27,10 +28,10 @@ class SavedLocationsViewModel {
         return savedLocations[index]
     }
     
-    func fetchSavedLocations() {
-        repository?.fetchSavedLocations() { [weak self] locations in
-            self?.savedLocations = locations
-            self?.delegate?.reloadView()
-        }
+    func fetchSavedLocations(context cont: NSManagedObjectContext) {
+            repository?.fetchSavedLocations(context: cont) { [weak self] locations in
+                self?.savedLocations = locations
+                self?.delegate?.reloadView()
+            }
     }
 }

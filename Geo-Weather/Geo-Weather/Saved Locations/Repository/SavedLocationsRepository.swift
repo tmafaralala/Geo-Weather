@@ -9,13 +9,15 @@ import Foundation
 import CoreData
 
 protocol SavedLocationsRepositoryType: AnyObject {
-    func fetchSavedLocations(completion: @escaping(([FavouriteLocation]?) -> Void))
+    func fetchSavedLocations(context: NSManagedObjectContext,
+                             completion: @escaping(([FavouriteLocation]?) -> Void))
 }
 
 class SavedLocationsReposirtory: SavedLocationsRepositoryType {
-    func fetchSavedLocations(completion: @escaping (([FavouriteLocation]?) -> Void)) {
+    func fetchSavedLocations(context: NSManagedObjectContext,
+                             completion: @escaping (([FavouriteLocation]?) -> Void)) {
         do {
-            completion(try PersistanceContext.shared?.fetch(FavouriteLocation.fetchRequest()))
+            completion(try context.fetch(FavouriteLocation.fetchRequest()))
         } catch {
             completion([])
         }
