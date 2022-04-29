@@ -118,7 +118,6 @@ class HomeViewModel: NSObject {
                 self?.cacheCurrentWeatherData(context: context)
             case .failure(let dataError):
                 print(dataError)
-                self?.delegate?.alert()
             }
         }
     }
@@ -133,7 +132,6 @@ class HomeViewModel: NSObject {
                 self?.cacheForecastWeatherData(context: context)
             case .failure(let dataError):
                 print(dataError)
-                self?.delegate?.alert()
             }
         }
     }

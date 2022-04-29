@@ -21,8 +21,8 @@ class HomeViewController: UIViewController {
     @IBOutlet private weak var weatherOutlook: UILabel!
     @IBOutlet private weak var weatherImage: UIImageView!
     @IBOutlet private weak var updateTime: UILabel!
-    private let locationManager: CLLocationManager = CLLocationManager()
     
+    private let locationManager: CLLocationManager = CLLocationManager()
     private lazy var homeViewModel = HomeViewModel(delegate: self,
                                                    repository: HomeRepository())
     
@@ -146,14 +146,6 @@ extension HomeViewController: ViewModelDelegateType {
             self.setBackground()
             self.forecast.reloadData()
         }
-    }
-    
-    func alert() {
-        
-    }
-    
-    func loading() {
-
     }
 }
 
