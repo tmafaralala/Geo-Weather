@@ -6,30 +6,26 @@
 //
 
 import Foundation
+import CoreData
 import CoreLocation
 
 class HomeViewModel: NSObject {
-    private var networkRepository: HomeRepositoryType?
-    private var localRepository: LocalHomeRepositoryType?
+    private var repository: HomeRepositoryType?
     private weak var delegate: ViewModelDelegateType?
     private var themeProvider: ThemeProviderType!
     private var currentWeather: GeoWeather?
     private var forecastWeather: [WeeklyForecast]?
     private var loactionIsFavourite: Bool = false
-    private let locationManager = CLLocationManager()
+    private var locationManager: CLLocationManager?
+    private(set) var updateTime: String = String(describing: Date())
     
     init(delegate: ViewModelDelegateType,
-         networkRepository: HomeRepositoryType,
-         localRepository: LocalHomeRepositoryType) {
+         repository: HomeRepositoryType, locationManager: CLLocationManager) {
         super.init()
-        self.networkRepository = networkRepository
-        self.localRepository = localRepository
+        self.repository = repository
         self.delegate = delegate
         self.themeProvider = ThemeProvider()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        self.locationManager = locationManager
     }
 
 // MARK: - Properties
@@ -82,17 +78,49 @@ class HomeViewModel: NSObject {
           return forecastWeather?[at]
     }
     
-    func fetchCurrentWeather() {
-        guard let lat = locationManager.location?.coordinate.latitude, let lon = locationManager.location?.coordinate.longitude else {
+    func changeTheme() {
+        themeProvider.changeTheme()
+    }
+
+    func fetchWeather(context: NSManagedObjectContext) {
+        fetchCurrentWeather(context: context)
+        fetchForecastWeather(context: context)
+    }
+    
+    func saveLocation(context cont: NSManagedObjectContext,named location: String) {
+        guard let lon = currentWeather?.coord.lon,
+              let lat = currentWeather?.coord.lat else {
             return
         }
-        
-        networkRepository?.fetchCurrentWeatherData(lat: lat,
-                                                   lon: lon ) { [weak self] result in
+
+        let newLocation = FavouriteLocation(context: cont)
+        newLocation.lon = lon
+        newLocation.lat = lat
+        newLocation.location = locationName
+        newLocation.name = location
+        repository?.saveLocation(context: cont) {  [weak self] result in
+            self?.loactionIsFavourite = result
+            self?.delegate?.reloadView()
+        }
+    }
+    
+    private func fetchCurrentWeather(context: NSManagedObjectContext) {
+        if !NetworkMonitor.shared.isConnected {
+            self.reloadCachedData(context: context)
+            return
+        }
+        guard let lat = locationManager?.location?.coordinate.latitude,
+              let lon = locationManager?.location?.coordinate.longitude else {
+            return
+        }
+        repository?.fetchCurrentWeatherData(lat: lat,
+                                            lon: lon ) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.currentWeather = weatherData
-                self?.fetchForecastWeather()
+                self?.formatUpdateTime()
+                self?.delegate?.reloadView()
+                self?.cacheCurrentWeatherData(context: context)
             case .failure(let dataError):
                 print(dataError)
                 self?.delegate?.alert()
@@ -100,25 +128,23 @@ class HomeViewModel: NSObject {
         }
     }
     
-    func fetchForecastWeather() {
-        guard let lat = locationManager.location?.coordinate.latitude, let lon = locationManager.location?.coordinate.longitude else {
+    private func fetchForecastWeather(context: NSManagedObjectContext) {
+        guard let lat = locationManager?.location?.coordinate.latitude,
+              let lon = locationManager?.location?.coordinate.longitude else {
             return
         }
-        networkRepository?.fetchForecastWeatherData(lat: lat,
-                                                    lon: lon) { [weak self] result in
+        repository?.fetchForecastWeatherData(lat: lat,
+                                             lon: lon) { [weak self] result in
             switch result {
             case .success(let weatherData):
                 self?.forecastWeather = self?.filterWeatherData(for: weatherData.forecastList)
                 self?.delegate?.reloadView()
+                self?.cacheForecastWeatherData(context: context)
             case .failure(let dataError):
                 print(dataError)
                 self?.delegate?.alert()
             }
         }
-    }
-        
-    func changeTheme() {
-        themeProvider.changeTheme()
     }
     
     private func filterWeatherData(for data: [WeatherForecast]) -> [WeeklyForecast] {
@@ -138,32 +164,112 @@ class HomeViewModel: NSObject {
         return filterData
     }
     
-    func saveLocation(named location: String) {
-        guard let lon = currentWeather?.coord.lon,
-              let lat = currentWeather?.coord.lat else {
+    private func cacheCurrentWeatherData(context: NSManagedObjectContext) {
+        guard let name = currentWeather?.name,
+              let lon = currentWeather?.coord.lon,
+              let lat = currentWeather?.coord.lat,
+              let countryName = currentWeather?.country.name,
+              let max = currentWeather?.main.tempMax,
+              let min = currentWeather?.main.tempMin,
+              let temp = currentWeather?.main.temp else {
             return
         }
-        guard let context = PersistanceContext.shared else {
-            return
-        }
-        let newLocation = FavouriteLocation(context: context)
-        newLocation.lon = lon
-        newLocation.lat = lat
-        newLocation.location = locationName
-        newLocation.name = location
-        localRepository?.saveLocation(location: newLocation) {  [weak self] result in
-            self?.loactionIsFavourite = result
-            self?.delegate?.reloadView()
-        }
-    }
-}
+        let offline = OfflineCurrentWeather(context: context)
+        offline.name = name
+        offline.offlineCoordinates = OfflineCurrentCoordinates(context: context)
+        offline.offlineCoordinates?.longitude = lon
+        offline.offlineCoordinates?.latitude = lat
+        formatUpdateTime()
 
-extension HomeViewModel: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-       fetchCurrentWeather()
+        offline.lastCache = updateTime
+        offline.offlineCountry = OfflineCountry(context: context)
+        offline.offlineCountry?.name = countryName
+        offline.offlineWeather = OfflineWeather(context: context)
+        offline.offlineWeather?.name = self.outLook
+        offline.offlineWeatherInfo = OfflineWeatherInfo(context: context)
+        offline.offlineWeatherInfo?.tempMax = max
+        offline.offlineWeatherInfo?.tempMin = min
+        offline.offlineWeatherInfo?.temperature = temp
+        repository?.cacheCurrentWeather(context: context) { result in
+            print(result)
+        }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-         print("error:: \(error.localizedDescription)")
+    private func cacheForecastWeatherData(context: NSManagedObjectContext) {
+        guard let forecasts = forecastWeather else {
+            return
+        }
+        for forecast in forecasts {
+            let offlineForecast = OfflineWeatherForecast(context: context)
+            offlineForecast.temperature = forecast.temperature
+            offlineForecast.weather = forecast.weather
+            offlineForecast.dayOfWeek = forecast.dayOfWeek
+        }
+        repository?.cacheCurrentForecast(context: context) { result in
+            print(result)
+        }
+    }
+    
+    private func formatUpdateTime() {
+        let date = Date()
+        let dateformat = DateFormatter()
+        dateformat.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        updateTime = dateformat.string(from: date)
+    }
+    
+    private func reloadCachedData(context cont: NSManagedObjectContext) {
+        reloadCachedForeCastWeather(cont: cont)
+        reloadCachedCurrentWeather(cont: cont)
+    }
+    
+    private func reloadCachedForeCastWeather(cont: NSManagedObjectContext) {
+        repository?.fetchCachedForecastWeather(context: cont) {[weak self] result in
+            guard let forecasts = result else {
+                return
+            }
+            self?.forecastWeather = []
+            var iterator = 0
+            var lastIndex = forecasts.count - 1
+            while iterator <= 5 {
+                let forecast = forecasts[lastIndex]
+                guard let dayOfWeek = forecast.dayOfWeek,
+                      let weather = forecast.weather else {
+                    return
+                }
+                let offlineForecast = WeeklyForecast(dayOfWeek: dayOfWeek,
+                                                     temperature: forecast.temperature,
+                                                     weather: weather)
+                self?.forecastWeather?.append(offlineForecast)
+                iterator += 1
+                lastIndex -= 1
+            }
+
+            self?.delegate?.reloadView()
+            return
+        }
+    }
+    
+    private func reloadCachedCurrentWeather(cont: NSManagedObjectContext) {
+        repository?.fetchCachedCurrentWeather(context: cont) {[weak self] result in
+            guard let lon = result?.offlineCoordinates?.longitude,
+                  let lat = result?.offlineCoordinates?.latitude,
+                  let offlineOutlook = result?.offlineWeather?.name,
+                  let temp = result?.offlineWeatherInfo?.temperature,
+                  let min = result?.offlineWeatherInfo?.tempMin,
+                  let max = result?.offlineWeatherInfo?.tempMax,
+                  let name = result?.name,
+                  let lastCache = result?.lastCache,
+                  let countryName = result?.offlineCountry?.name else {
+                return
+            }
+            self?.currentWeather = GeoWeather(coord: Coord(lon: lon, lat: lat),
+                                              weather: [Weather(main: offlineOutlook)],
+                                              main: Main(temp: temp, tempMin: min, tempMax: max),
+                                              name: name,
+                                              country: Country(name: countryName))
+            self?.updateTime = lastCache
+            self?.delegate?.reloadView()
+            return
+        }
     }
 }

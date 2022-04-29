@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 class HomeViewController: UIViewController {
 
@@ -19,31 +20,54 @@ class HomeViewController: UIViewController {
     @IBOutlet private weak var locationName: UILabel!
     @IBOutlet private weak var weatherOutlook: UILabel!
     @IBOutlet private weak var weatherImage: UIImageView!
-    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet private weak var updateTime: UILabel!
+    private let locationManager: CLLocationManager = CLLocationManager()
     
     private lazy var homeViewModel = HomeViewModel(delegate: self,
-                                                   networkRepository: HomeRepository(),
-                                                   localRepository: LocalHomeRepository())
+                                                   repository: HomeRepository(),
+                                                   locationManager: locationManager)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.forecast.delegate = self
         self.forecast.dataSource = self
+        setUpDesign()
+        setUpLocation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.tintColor = .white
+        DispatchQueue.main.async {
+            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+                return
+            }
+            self.homeViewModel.fetchWeather(context:context )
+        }
+    }
+    
+    private func setUpLocation() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    private func setUpDesign() {
         self.forecast.layer.backgroundColor = UIColor.clear.cgColor
         self.forecast.backgroundColor = .clear
         self.forecast.backgroundColor = .clear
         themeToggler.addBorder()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.tintColor = .white
-        homeViewModel.fetchCurrentWeather()
-    }
-    
     @IBAction private func themeToggle(_ sender: Any) {
         homeViewModel.changeTheme()
-        homeViewModel.fetchCurrentWeather()
+        DispatchQueue.main.async {
+            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+                return
+            }
+            self.homeViewModel.fetchWeather(context:context )
+        }
     }
     
     private func loadWeatherImage() {
@@ -61,6 +85,7 @@ class HomeViewController: UIViewController {
               let outlook = homeViewModel.outLook else {
             return
         }
+        updateTime.text = "Last Update: "+homeViewModel.updateTime
         locationName.text = homeViewModel.locationName
         temperature.text = temp
         currentTemp.text = temp
@@ -95,7 +120,12 @@ class HomeViewController: UIViewController {
             guard let location = alertController.textFields?[0].text else {
                 return
             }
-            self.homeViewModel.saveLocation(named: location )
+            DispatchQueue.main.async {
+                guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+                    return
+                }
+                self.homeViewModel.saveLocation(context: context,named: location )
+            }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(saveAction)
@@ -138,5 +168,20 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
         forecastCell.setUpCell(for: forecast)
         forecastCell.backgroundColor = .clear
         return forecastCell
+    }
+}
+
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        DispatchQueue.main.async {
+            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+                return
+            }
+            self.homeViewModel.fetchWeather(context:context )
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+         print("error:: \(error.localizedDescription)")
     }
 }

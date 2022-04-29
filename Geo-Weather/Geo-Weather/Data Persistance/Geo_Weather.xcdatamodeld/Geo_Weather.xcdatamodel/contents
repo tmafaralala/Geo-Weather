@@ -6,7 +6,45 @@
         <attribute name="lon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="OfflineCountry" representedClassName=".OfflineCountry" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="offlineCurrentWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineCurrentWeather" inverseName="offlineCountry" inverseEntity="OfflineCurrentWeather"/>
+    </entity>
+    <entity name="OfflineCurrentCoordinates" representedClassName=".OfflineCurrentCoordinates" syncable="YES">
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="offlineCurrentWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineCurrentWeather" inverseName="offlineCoordinates" inverseEntity="OfflineCurrentWeather"/>
+    </entity>
+    <entity name="OfflineCurrentWeather" representedClassName=".OfflineCurrentWeather" syncable="YES">
+        <attribute name="lastCache" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="offlineCoordinates" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineCurrentCoordinates" inverseName="offlineCurrentWeather" inverseEntity="OfflineCurrentCoordinates"/>
+        <relationship name="offlineCountry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineCountry" inverseName="offlineCurrentWeather" inverseEntity="OfflineCountry"/>
+        <relationship name="offlineWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineWeather" inverseName="offlineCurrentWeather" inverseEntity="OfflineWeather"/>
+        <relationship name="offlineWeatherInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineWeatherInfo" inverseName="offlineCurrentWeather" inverseEntity="OfflineWeatherInfo"/>
+    </entity>
+    <entity name="OfflineWeather" representedClassName=".OfflineWeather" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="offlineCurrentWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineCurrentWeather" inverseName="offlineWeather" inverseEntity="OfflineCurrentWeather"/>
+    </entity>
+    <entity name="OfflineWeatherForecast" representedClassName=".OfflineWeatherForecast" syncable="YES">
+        <attribute name="dayOfWeek" optional="YES" attributeType="String"/>
+        <attribute name="temperature" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="weather" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="OfflineWeatherInfo" representedClassName=".OfflineWeatherInfo" syncable="YES">
+        <attribute name="temperature" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="tempMax" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="tempMin" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="offlineCurrentWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OfflineCurrentWeather" inverseName="offlineWeatherInfo" inverseEntity="OfflineCurrentWeather"/>
+    </entity>
     <elements>
-        <element name="FavouriteLocation" positionX="-63" positionY="-18" width="128" height="89"/>
+        <element name="FavouriteLocation" positionX="-63" positionY="-18" width="128" height="14"/>
+        <element name="OfflineCountry" positionX="0" positionY="54" width="128" height="59"/>
+        <element name="OfflineCurrentCoordinates" positionX="-54" positionY="27" width="128" height="74"/>
+        <element name="OfflineCurrentWeather" positionX="-63" positionY="18" width="128" height="119"/>
+        <element name="OfflineWeather" positionX="-36" positionY="36" width="128" height="59"/>
+        <element name="OfflineWeatherInfo" positionX="-18" positionY="45" width="128" height="89"/>
+        <element name="OfflineWeatherForecast" positionX="-27" positionY="63" width="128" height="74"/>
     </elements>
 </model>
