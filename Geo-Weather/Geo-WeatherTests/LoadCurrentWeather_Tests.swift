@@ -15,7 +15,6 @@ class LoadCurrentWeather_Tests: XCTestCase {
     private var testModelDelegate: MockHomeDelegate!
     private var testViewModel: HomeViewModel!
     
-    
     override func setUp() {
         self.testHomeRepository = MockHomeRepository()
         self.testModelDelegate = MockHomeDelegate()
@@ -23,9 +22,19 @@ class LoadCurrentWeather_Tests: XCTestCase {
                                            repository: testHomeRepository)
     }
     
-    func testFetchWeatherData(){
+    func testFetchWeatherData() {
         testHomeRepository.testSuccess = true
-       
+        testHomeRepository.fetchCurrentWeatherData(lat: 2.0, lon: 2.0) { result in
+            switch(result) {
+            case .success(let weather):
+                print(weather)
+                XCTAssertTrue(true)
+            case.failure(let error):
+                print(error)
+                XCTAssertTrue(false)
+            }
+        }
+
     }
     
 }
@@ -64,9 +73,6 @@ class MockHomeRepository: HomeRepositoryType {
                                                           weather: "rainy"))
             
             let offlineMock = OfflineWeatherForecast()
-            offlineMock.weather = "rainy"
-            offlineMock.temperature = mockStartTemp + 1.0
-            offlineMock.dayOfWeek = day.rawValue
             self.mockOfflineForecastWeatherData?.append(offlineMock)
             
             self.mockForecastList.append(WeatherForecast(dt: mockDateTime+Int(1.0) ,
