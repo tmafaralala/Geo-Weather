@@ -17,10 +17,10 @@ class SavedLocationTableViewCell: UITableViewCell {
         guard let cellLocation = location?.location else {
             return
         }
-        locationSetup(location: cellLocation)
+        locationLabelSetup(location: cellLocation)
     }
     
-    private func locationSetup(location: String) {
+    private func locationLabelSetup(location: String) {
         let icon = NSTextAttachment()
         icon.image = UIImage(systemName:"mappin.and.ellipse")?.withTintColor(.systemBlue, renderingMode: .alwaysOriginal)
         

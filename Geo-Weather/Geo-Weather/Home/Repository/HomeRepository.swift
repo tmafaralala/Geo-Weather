@@ -31,6 +31,7 @@ protocol HomeRepositoryType: AnyObject {
     
     func fetchCachedCurrentWeather(context: NSManagedObjectContext,
                                    completion: @escaping((OfflineCurrentWeather?) -> Void))
+    
     func fetchCachedForecastWeather(context: NSManagedObjectContext,
                                     completion: @escaping(([OfflineWeatherForecast]?) -> Void))
 }
@@ -41,7 +42,13 @@ class HomeRepository: HomeRepositoryType {
                                  completion: @escaping (CurrentWeatherResponse)) {
         let homeRequest = WeatherRequest(lat: lat, lon: lon)
         ApiClient.shared.call(with: homeRequest, for: GeoWeather.self) { result in
-            completion(result)
+            switch (result) {
+            case .success(let successResult):
+                return completion(.success(successResult))
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+
         }
     }
     
