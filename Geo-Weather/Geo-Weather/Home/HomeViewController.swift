@@ -24,8 +24,7 @@ class HomeViewController: UIViewController {
     private let locationManager: CLLocationManager = CLLocationManager()
     
     private lazy var homeViewModel = HomeViewModel(delegate: self,
-                                                   repository: HomeRepository(),
-                                                   locationManager: locationManager)
+                                                   repository: HomeRepository())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,10 +38,12 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.tintColor = .white
         DispatchQueue.main.async {
-            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext,
+                  let lat = self.locationManager.location?.coordinate.latitude,
+                  let lon = self.locationManager.location?.coordinate.longitude else {
                 return
             }
-            self.homeViewModel.fetchWeather(context:context )
+            self.homeViewModel.fetchWeather(context:context, lon: lon, lat: lat )
         }
     }
     
@@ -63,10 +64,12 @@ class HomeViewController: UIViewController {
     @IBAction private func themeToggle(_ sender: Any) {
         homeViewModel.changeTheme()
         DispatchQueue.main.async {
-            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext,
+                  let lat = self.locationManager.location?.coordinate.latitude,
+                  let lon = self.locationManager.location?.coordinate.longitude else {
                 return
             }
-            self.homeViewModel.fetchWeather(context:context )
+            self.homeViewModel.fetchWeather(context:context, lon: lon, lat: lat )
         }
     }
     
@@ -174,10 +177,12 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource {
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         DispatchQueue.main.async {
-            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+            guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext,
+                  let lat = self.locationManager.location?.coordinate.latitude,
+                  let lon = self.locationManager.location?.coordinate.longitude else {
                 return
             }
-            self.homeViewModel.fetchWeather(context:context )
+            self.homeViewModel.fetchWeather(context:context, lon: lon, lat: lat )
         }
     }
     

@@ -16,16 +16,14 @@ class HomeViewModel: NSObject {
     private var currentWeather: GeoWeather?
     private var forecastWeather: [WeeklyForecast]?
     private var loactionIsFavourite: Bool = false
-    private var locationManager: CLLocationManager?
     private(set) var updateTime: String = String(describing: Date())
     
     init(delegate: ViewModelDelegateType,
-         repository: HomeRepositoryType, locationManager: CLLocationManager) {
+         repository: HomeRepositoryType) {
         super.init()
         self.repository = repository
         self.delegate = delegate
         self.themeProvider = ThemeProvider()
-        self.locationManager = locationManager
     }
 
 // MARK: - Properties
@@ -82,9 +80,9 @@ class HomeViewModel: NSObject {
         themeProvider.changeTheme()
     }
 
-    func fetchWeather(context: NSManagedObjectContext) {
-        fetchCurrentWeather(context: context)
-        fetchForecastWeather(context: context)
+    func fetchWeather(context: NSManagedObjectContext, lon: Double, lat: Double) {
+        fetchCurrentWeather(context: context, lat: lat, lon: lon)
+        fetchForecastWeather(context: context, lat: lat, lon: lon)
     }
     
     func saveLocation(context cont: NSManagedObjectContext,named location: String) {
@@ -104,15 +102,12 @@ class HomeViewModel: NSObject {
         }
     }
     
-    private func fetchCurrentWeather(context: NSManagedObjectContext) {
+    private func fetchCurrentWeather(context: NSManagedObjectContext, lat: Double,lon: Double) {
         if !NetworkMonitor.shared.isConnected {
             self.reloadCachedData(context: context)
             return
         }
-        guard let lat = locationManager?.location?.coordinate.latitude,
-              let lon = locationManager?.location?.coordinate.longitude else {
-            return
-        }
+
         repository?.fetchCurrentWeatherData(lat: lat,
                                             lon: lon ) { [weak self] result in
             switch result {
@@ -128,11 +123,7 @@ class HomeViewModel: NSObject {
         }
     }
     
-    private func fetchForecastWeather(context: NSManagedObjectContext) {
-        guard let lat = locationManager?.location?.coordinate.latitude,
-              let lon = locationManager?.location?.coordinate.longitude else {
-            return
-        }
+    private func fetchForecastWeather(context: NSManagedObjectContext, lat: Double,lon: Double) {
         repository?.fetchForecastWeatherData(lat: lat,
                                              lon: lon) { [weak self] result in
             switch result {
