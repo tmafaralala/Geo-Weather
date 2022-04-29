@@ -10,6 +10,7 @@ import UIKit
 class SavedLocationsViewController: UIViewController {
 
     @IBOutlet weak var savedLocations: UITableView!
+    
     private lazy var savedLocationsViewModel = SavedLocationsViewModel(delegate: self,
                                                                        repository: SavedLocationsReposirtory())
     
@@ -37,14 +38,6 @@ extension SavedLocationsViewController: ViewModelDelegateType {
         DispatchQueue.main.async {
             self.savedLocations.reloadData()
         }
-    }
-    
-    func alert() {
-
-    }
-    
-    func loading() {
-
     }
 }
 

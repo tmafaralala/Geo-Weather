@@ -9,6 +9,4 @@ import Foundation
 
 protocol ViewModelDelegateType: AnyObject {
     func reloadView()
-    func alert()
-    func loading()
 }

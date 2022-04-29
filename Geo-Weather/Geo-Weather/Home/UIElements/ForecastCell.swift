@@ -23,7 +23,7 @@ class ForecastCell: UITableViewCell {
         temperature.text = String(format: "%.1f", forecast.temperature) + "°"
     }
     
-    func cellIcon(for forecastWeather: WeatherType) -> UIImage {
+    private func cellIcon(for forecastWeather: WeatherType) -> UIImage {
         switch (forecastWeather) {
         case .clouds:
             guard let image = UIImage(named: "clouds") else {

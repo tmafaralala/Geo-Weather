@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 
 class SavedLocationsViewModel {
+    
     private weak var delegate: ViewModelDelegateType?
     private var repository: SavedLocationsRepositoryType?
     private var savedLocations: [FavouriteLocation]!
